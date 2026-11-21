@@ -138,6 +138,7 @@ const List<DashboardWidget> defaultDashboardWidgets = [
   DashboardWidget.profiles,
   DashboardWidget.proxyGroups,
   DashboardWidget.connectionStats,
+  DashboardWidget.ruleSetInsight,
 ];
 
 /// A phone starts without the VPN switch and the diagnostic cards, which stay

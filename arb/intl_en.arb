@@ -1253,5 +1253,20 @@
   "coreRunningDesc": "The app is connected to the core",
   "forceRestartCore": "Force restart",
   "vpnPermissionNotGranted": "VPN permission was not granted, so the VPN did not start. An always-on VPN set for another app also blocks it.",
-  "vpnServiceStartFailed": "The VPN service could not start."
+  "vpnServiceStartFailed": "The VPN service could not start.",
+  "ruleSetInsight": "Ruleset insight",
+  "ruleSetInsightDesc": "Explains the active ruleset as diagrams and checks",
+  "ruleSetInsightLoading": "Reading the active config…",
+  "ruleSetInsightUnavailable": "No config to analyze",
+  "ruleSetInsightRules": "Rules",
+  "ruleSetInsightSections": "Sections",
+  "ruleSetInsightTargets": "Targets",
+  "ruleSetInsightIssues": "Issues",
+  "ruleSetInsightNoIssues": "No issues",
+  "ruleSetInsightChecks": "Checks",
+  "ruleSetInsightNodes": "Nodes",
+  "ruleSetInsightGroups": "Groups",
+  "ruleSetInsightProviders": "Providers",
+  "ruleSetInsightCopy": "Copy Mermaid report",
+  "ruleSetInsightCopyHint": "Structure, flow and per-section details"
 }
