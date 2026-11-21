@@ -6947,6 +6947,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The VPN service could not start.'**
   String get vpnServiceStartFailed;
+
+  /// No description provided for @ruleSetInsight.
+  ///
+  /// In en, this message translates to:
+  /// **'Ruleset insight'**
+  String get ruleSetInsight;
+
+  /// No description provided for @ruleSetInsightDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Explains the active ruleset as diagrams and checks'**
+  String get ruleSetInsightDesc;
+
+  /// No description provided for @ruleSetInsightLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading the active config…'**
+  String get ruleSetInsightLoading;
+
+  /// No description provided for @ruleSetInsightUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No config to analyze'**
+  String get ruleSetInsightUnavailable;
+
+  /// No description provided for @ruleSetInsightRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Rules'**
+  String get ruleSetInsightRules;
+
+  /// No description provided for @ruleSetInsightSections.
+  ///
+  /// In en, this message translates to:
+  /// **'Sections'**
+  String get ruleSetInsightSections;
+
+  /// No description provided for @ruleSetInsightTargets.
+  ///
+  /// In en, this message translates to:
+  /// **'Targets'**
+  String get ruleSetInsightTargets;
+
+  /// No description provided for @ruleSetInsightIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'Issues'**
+  String get ruleSetInsightIssues;
+
+  /// No description provided for @ruleSetInsightNoIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'No issues'**
+  String get ruleSetInsightNoIssues;
+
+  /// No description provided for @ruleSetInsightChecks.
+  ///
+  /// In en, this message translates to:
+  /// **'Checks'**
+  String get ruleSetInsightChecks;
+
+  /// No description provided for @ruleSetInsightNodes.
+  ///
+  /// In en, this message translates to:
+  /// **'Nodes'**
+  String get ruleSetInsightNodes;
+
+  /// No description provided for @ruleSetInsightGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'Groups'**
+  String get ruleSetInsightGroups;
+
+  /// No description provided for @ruleSetInsightProviders.
+  ///
+  /// In en, this message translates to:
+  /// **'Providers'**
+  String get ruleSetInsightProviders;
+
+  /// No description provided for @ruleSetInsightCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Mermaid report'**
+  String get ruleSetInsightCopy;
+
+  /// No description provided for @ruleSetInsightCopyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Structure, flow and per-section details'**
+  String get ruleSetInsightCopyHint;
 }
 
 class _AppLocalizationsDelegate

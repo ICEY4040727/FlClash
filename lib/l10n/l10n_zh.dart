@@ -3731,4 +3731,49 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get vpnServiceStartFailed => 'VPN 服务无法启动。';
+
+  @override
+  String get ruleSetInsight => '规则集分析';
+
+  @override
+  String get ruleSetInsightDesc => '用图表解释当前规则集并检查常见问题';
+
+  @override
+  String get ruleSetInsightLoading => '正在读取当前配置…';
+
+  @override
+  String get ruleSetInsightUnavailable => '没有可分析的配置';
+
+  @override
+  String get ruleSetInsightRules => '规则';
+
+  @override
+  String get ruleSetInsightSections => '段落';
+
+  @override
+  String get ruleSetInsightTargets => '出口';
+
+  @override
+  String get ruleSetInsightIssues => '问题';
+
+  @override
+  String get ruleSetInsightNoIssues => '无问题';
+
+  @override
+  String get ruleSetInsightChecks => '检查结果';
+
+  @override
+  String get ruleSetInsightNodes => '节点';
+
+  @override
+  String get ruleSetInsightGroups => '策略组';
+
+  @override
+  String get ruleSetInsightProviders => '规则集';
+
+  @override
+  String get ruleSetInsightCopy => '复制 Mermaid 报告';
+
+  @override
+  String get ruleSetInsightCopyHint => '包含结构、流转与分段明细';
 }

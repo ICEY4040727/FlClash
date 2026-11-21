@@ -3780,4 +3780,51 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get vpnServiceStartFailed => 'VPN サービスを起動できませんでした。';
+
+  @override
+  String get ruleSetInsight => 'Ruleset insight';
+
+  @override
+  String get ruleSetInsightDesc =>
+      'Explains the active ruleset as diagrams and checks';
+
+  @override
+  String get ruleSetInsightLoading => 'Reading the active config…';
+
+  @override
+  String get ruleSetInsightUnavailable => 'No config to analyze';
+
+  @override
+  String get ruleSetInsightRules => 'Rules';
+
+  @override
+  String get ruleSetInsightSections => 'Sections';
+
+  @override
+  String get ruleSetInsightTargets => 'Targets';
+
+  @override
+  String get ruleSetInsightIssues => 'Issues';
+
+  @override
+  String get ruleSetInsightNoIssues => 'No issues';
+
+  @override
+  String get ruleSetInsightChecks => 'Checks';
+
+  @override
+  String get ruleSetInsightNodes => 'Nodes';
+
+  @override
+  String get ruleSetInsightGroups => 'Groups';
+
+  @override
+  String get ruleSetInsightProviders => 'Providers';
+
+  @override
+  String get ruleSetInsightCopy => 'Copy Mermaid report';
+
+  @override
+  String get ruleSetInsightCopyHint =>
+      'Structure, flow and per-section details';
 }
