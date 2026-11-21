@@ -1,0 +1,70 @@
+name: Upstream Sync
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: upstream-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "upstream-sync[bot]"
+          git config user.email "upstream-sync@users.noreply.github.com"
+
+      - name: Merge upstream/main
+        id: merge
+        run: |
+          set -e
+          git remote add upstream https://github.com/chen08209/FlClash.git 2>/dev/null || true
+          git fetch --no-tags upstream main
+          if git merge-base --is-ancestor upstream/main HEAD; then
+            echo "Already up to date."
+            echo "state=current" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if git merge --no-edit upstream/main; then
+            git push origin HEAD:main
+            echo "state=merged" >> "$GITHUB_OUTPUT"
+          else
+            git merge --abort
+            echo "state=conflict" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Report conflict
+        if: steps.merge.outputs.state == 'conflict'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BODY=$(printf '%s\n' \
+            "自动同步 \`chen08209/FlClash:main\` 失败，存在合并冲突，需要本地手动合并后推送。" \
+            "" \
+            "本地处理：" \
+            '```' \
+            "git fetch upstream" \
+            "git switch main" \
+            "git merge upstream/main      # 解决冲突" \
+            "git push origin main" \
+            '```')
+          EXISTING=$(gh issue list --state open --search "Upstream 同步冲突 in:title" --json number --jq '.[0].number')
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "$BODY"
+          else
+            gh issue create --title "Upstream 同步冲突：需要手动合并" --body "$BODY"
+          fi
