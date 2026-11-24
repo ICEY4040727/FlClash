@@ -103,6 +103,8 @@ void main() {
       expect(report.ruleCount, 8);
       expect(report.sections.length, 2);
       expect(report.sections.first.title, '1) 广告拦截');
+      expect(report.sections.first.startLine, greaterThan(0));
+      expect(report.sections.first.lineRange, startsWith('L'));
       expect(report.sections.last.title, '2) 代理');
       expect(report.proxyCount, 2);
       expect(report.groupCount, 2);

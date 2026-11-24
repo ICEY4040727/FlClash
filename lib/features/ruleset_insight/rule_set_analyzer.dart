@@ -35,6 +35,7 @@ class RuleEntry {
     required this.target,
     required this.params,
     required this.section,
+    required this.line,
     required this.raw,
   });
 
@@ -44,6 +45,7 @@ class RuleEntry {
   final String target;
   final List<String> params;
   final String section;
+  final int line;
   final String raw;
 
   bool get isMatch => type == 'MATCH';
@@ -52,10 +54,19 @@ class RuleEntry {
 }
 
 class RuleSection {
-  const RuleSection({required this.title, required this.rules});
+  const RuleSection({
+    required this.title,
+    required this.rules,
+    required this.startLine,
+    required this.endLine,
+  });
 
   final String title;
   final List<RuleEntry> rules;
+  final int startLine;
+  final int endLine;
+
+  String get lineRange => 'L$startLine–L$endLine';
 
   Map<String, int> get targetCounts {
     final counts = <String, int>{};
@@ -82,6 +93,7 @@ class RuleSetReport {
     required this.proxyProviderCount,
     required this.nodeTypes,
     required this.proxyServers,
+    required this.sourceLines,
     required this.typeCounts,
     required this.targetCounts,
     required this.errors,
@@ -98,6 +110,7 @@ class RuleSetReport {
   final int proxyProviderCount;
   final Map<String, int> nodeTypes;
   final List<String> proxyServers;
+  final List<String> sourceLines;
   final Map<String, int> typeCounts;
   final Map<String, int> targetCounts;
   final List<String> errors;
@@ -210,6 +223,7 @@ class RuleSetAnalyzer {
       proxyProviderCount: proxyProviderCount,
       nodeTypes: nodeTypes,
       proxyServers: proxyServers,
+      sourceLines: text.split('\n'),
       typeCounts: typeCounts,
       targetCounts: targetCounts,
       errors: errors,
@@ -239,7 +253,14 @@ class RuleSetAnalyzer {
 
     void flush() {
       if (current.isEmpty) return;
-      sections.add(RuleSection(title: title, rules: current));
+      sections.add(
+        RuleSection(
+          title: title,
+          rules: current,
+          startLine: current.first.line,
+          endLine: current.last.line,
+        ),
+      );
       current = <RuleEntry>[];
     }
 
@@ -269,7 +290,7 @@ class RuleSetAnalyzer {
         title = next;
       }
       final body = _stripInlineComment(match.group(1)!);
-      final rule = _parseRule(body, ++index, title);
+      final rule = _parseRule(body, ++index, title, i + 1);
       if (rule != null) {
         current.add(rule);
       } else {
@@ -280,7 +301,7 @@ class RuleSetAnalyzer {
     return sections;
   }
 
-  static RuleEntry? _parseRule(String body, int index, String section) {
+  static RuleEntry? _parseRule(String body, int index, String section, int line) {
     final fields = _splitFields(body);
     if (fields.isEmpty) return null;
     final type = fields.first.toUpperCase();
@@ -292,6 +313,7 @@ class RuleSetAnalyzer {
         target: fields.length > 1 ? fields[1] : '',
         params: const [],
         section: section,
+        line: line,
         raw: body,
       );
     }
@@ -303,6 +325,7 @@ class RuleSetAnalyzer {
         target: fields[2],
         params: fields.sublist(3),
         section: section,
+        line: line,
         raw: body,
       );
     }
@@ -313,6 +336,7 @@ class RuleSetAnalyzer {
       target: fields.length > 1 ? fields[1] : '',
       params: const [],
       section: section,
+      line: line,
       raw: body,
     );
   }

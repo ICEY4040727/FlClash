@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/features/ruleset_insight/rule_set_analyzer.dart';
 import 'package:fl_clash/features/ruleset_insight/rule_set_diagram.dart';
+import 'package:fl_clash/features/ruleset_insight/rule_source_view.dart';
 import 'package:fl_clash/features/ruleset_insight/server_chain.dart';
 import 'package:fl_clash/features/ruleset_insight/server_chain_fetcher.dart';
 import 'package:fl_clash/providers/providers.dart';
@@ -258,6 +259,12 @@ class _RuleSetInsightSheetState extends State<RuleSetInsightSheet> {
             sliver: SliverList.list(
               children: [
                 _SummaryRows(report: report),
+                ListItem(
+                  title: Text(
+                    '${appLocalizations.ruleSetInsightSource}: config.yaml · '
+                    '${report.sourceLines.length}',
+                  ),
+                ),
                 const SizedBox(height: 12),
                 _SheetHeader(title: appLocalizations.ruleSetInsightServerChain),
                 if (chain != null) ...[
@@ -314,8 +321,11 @@ class _RuleSetInsightSheetState extends State<RuleSetInsightSheet> {
                 for (final section in report.sections)
                   ListItem(
                     title: Text(section.title, maxLines: 2),
-                    subtitle: Text(section.topTargets),
+                    subtitle: Text(
+                      '${section.topTargets} · ${section.lineRange}',
+                    ),
                     trailing: Text('${section.rules.length}'),
+                    onTap: () => showRuleSourceSheet(context, report, section),
                   ),
                 const SizedBox(height: 12),
                 _SheetHeader(title: appLocalizations.ruleSetInsightChecks),

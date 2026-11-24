@@ -269,6 +269,12 @@ class _FlowPainter extends CustomPainter {
         palette.countStyle.copyWith(color: palette.subtext),
         align: TextAlign.right,
       );
+      _text(
+        canvas,
+        section.lineRange,
+        Rect.fromLTWH(rect.left + 8, rect.bottom - 18, rect.width - 46, 16),
+        palette.countStyle.copyWith(color: palette.subtext),
+      );
     }
 
     for (final entry in targets) {

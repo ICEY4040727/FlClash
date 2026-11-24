@@ -4060,6 +4060,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get ruleSetInsightRouteRules => 'Route rules';
 
   @override
+  String get ruleSetInsightSource => 'Source';
+
+  @override
   String get ruleSetInsightServerChainRefresh => 'Refresh server chain';
 
   @override

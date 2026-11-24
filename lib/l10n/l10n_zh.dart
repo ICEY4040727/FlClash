@@ -3788,6 +3788,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ruleSetInsightRouteRules => '路由规则';
 
   @override
+  String get ruleSetInsightSource => '来源';
+
+  @override
   String get ruleSetInsightServerChainRefresh => '刷新服务端链路';
 
   @override
