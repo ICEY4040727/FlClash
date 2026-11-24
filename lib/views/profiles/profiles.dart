@@ -8,6 +8,7 @@ import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/state.dart';
 import 'package:fl_clash/ui/icons/icons.dart';
 import 'package:fl_clash/views/profiles/custom/custom.dart';
+import 'package:fl_clash/views/dashboard/widgets/rule_set_insight.dart';
 import 'package:fl_clash/views/profiles/extend/extend.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/services.dart';
@@ -70,6 +71,11 @@ class _ProfilesViewState extends ConsumerState<ProfilesView> {
   List<IconButtonData> _buildActions(List<Profile> profiles) {
     return profiles.isNotEmpty
         ? [
+            IconButtonData(
+              glyph: AppGlyphs.rules,
+              onPressed: () => openRuleSetInsightSheet(context),
+              tooltip: context.appLocalizations.ruleSetInsight,
+            ),
             IconButtonData(
               glyph: AppGlyphs.sync,
               onPressed: () {

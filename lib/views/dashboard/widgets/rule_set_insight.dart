@@ -23,6 +23,15 @@ RuleSetReport? analyzeRuleSetFile(String path) {
   return RuleSetAnalyzer.analyze(file.readAsStringSync());
 }
 
+Future<void> openRuleSetInsightSheet(BuildContext context) async {
+  final path = await appPath.configFilePath;
+  final report =
+      await compute(analyzeRuleSetFile, path) ?? RuleSetAnalyzer.analyze('');
+  final chain = await ServerChain.load();
+  if (!context.mounted) return;
+  showRuleSetInsightSheet(context, report, chain);
+}
+
 void showRuleSetInsightSheet(
   BuildContext context,
   RuleSetReport report,

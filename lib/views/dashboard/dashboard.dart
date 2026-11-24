@@ -150,7 +150,6 @@ class _DesktopDashboard extends StatelessWidget {
     final middleHeight = (compact ? 152 : 176) * scale;
     final tablesHeight = connectionsTableMinHeight(density, scale);
     final summaryHeight = (compact ? 112 : 120) * scale;
-    final insightHeight = (compact ? 116 : 132) * scale;
     return LayoutBuilder(
       builder: (context, constraints) {
         final room =
@@ -218,10 +217,6 @@ class _DesktopDashboard extends StatelessWidget {
                   middleHeight,
                   row(const [(1, ServiceStatusCard()), (1, MemoryInfo())]),
                 ),
-                sized(
-                  insightHeight,
-                  const RepaintBoundary(child: RuleSetInsightCard()),
-                ),
                 sized(summaryHeight, summaries),
               ],
             ),
@@ -254,18 +249,13 @@ class _DesktopDashboard extends StatelessWidget {
               (1, const MemoryInfo()),
             ]),
           ),
-          sized(
-            insightHeight,
-            const RepaintBoundary(child: RuleSetInsightCard()),
-          ),
         ];
         final rowsHeight =
             padding.vertical +
             topHeight +
             controlHeight +
             middleHeight +
-            insightHeight +
-            gap * 4;
+            gap * 3;
         final tablesFit = constraints.maxHeight >= rowsHeight + tablesHeight;
         final fills = constraints.maxHeight >= rowsHeight + summaryHeight;
         return SingleChildScrollView(
