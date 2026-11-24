@@ -1,13 +1,16 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/features/ruleset_insight/rule_set_analyzer.dart';
 import 'package:fl_clash/features/ruleset_insight/rule_set_diagram.dart';
+import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/views/dashboard/style.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'card.dart';
 
@@ -25,16 +28,18 @@ void showRuleSetInsightSheet(BuildContext context, RuleSetReport report) {
   );
 }
 
-class RuleSetInsightCard extends StatefulWidget {
+class RuleSetInsightCard extends ConsumerStatefulWidget {
   const RuleSetInsightCard({super.key});
 
   @override
-  State<RuleSetInsightCard> createState() => _RuleSetInsightCardState();
+  ConsumerState<RuleSetInsightCard> createState() =>
+      _RuleSetInsightCardState();
 }
 
-class _RuleSetInsightCardState extends State<RuleSetInsightCard> {
+class _RuleSetInsightCardState extends ConsumerState<RuleSetInsightCard> {
   RuleSetReport? _report;
   bool _loading = true;
+  int _generation = 0;
 
   @override
   void initState() {
@@ -42,33 +47,45 @@ class _RuleSetInsightCardState extends State<RuleSetInsightCard> {
     _load();
   }
 
-  Future<void> _load() async {
+  Future<RuleSetReport?> _load() async {
+    final generation = ++_generation;
     try {
       final path = await appPath.configFilePath;
       final report = await compute(analyzeRuleSetFile, path);
-      if (!mounted) return;
+      if (!mounted || generation != _generation) return null;
       setState(() {
         _report = report;
         _loading = false;
       });
+      return report;
     } catch (_) {
-      if (!mounted) return;
+      if (!mounted || generation != _generation) return null;
       setState(() {
         _loading = false;
       });
+      return null;
     }
+  }
+
+  Future<void> _openSheet() async {
+    final fresh = await _load();
+    if (!mounted) return;
+    final report = fresh ?? _report;
+    if (report == null) return;
+    showRuleSetInsightSheet(context, report);
   }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(groupsProvider, (_, _) {
+      unawaited(_load());
+    });
     final appLocalizations = context.appLocalizations;
     final report = _report;
     return DashboardCard(
       semanticLabel: appLocalizations.ruleSetInsight,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      onTap: report == null
-          ? _load
-          : () => showRuleSetInsightSheet(context, report),
+      onTap: _openSheet,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
