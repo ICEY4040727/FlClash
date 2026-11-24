@@ -351,10 +351,18 @@ class _RuleSetInsightSheetState extends State<RuleSetInsightSheet> {
                 if (report.errors.isEmpty && report.warnings.isEmpty)
                   ListItem(title: Text(appLocalizations.ruleSetInsightNoIssues))
                 else ...[
-                  for (final error in report.errors)
+                  for (final error in report.errors.take(40))
                     ListItem(title: Text('❌ $error')),
-                  for (final warning in report.warnings)
+                  for (final warning in report.warnings.take(60))
                     ListItem(title: Text('⚠️ $warning')),
+                  if (report.errors.length + report.warnings.length > 100)
+                    ListItem(
+                      title: Text(
+                        appLocalizations.ruleSetInsightMoreIssues(
+                          report.errors.length + report.warnings.length - 100,
+                        ),
+                      ),
+                    ),
                 ],
                 if (report.parseError != null)
                   ListItem(title: Text(report.parseError!)),

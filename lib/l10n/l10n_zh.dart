@@ -3791,6 +3791,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ruleSetInsightSource => '来源';
 
   @override
+  String ruleSetInsightMoreIssues(int count) {
+    return '还有 $count 条';
+  }
+
+  @override
   String get ruleSetInsightServerChainRefresh => '刷新服务端链路';
 
   @override

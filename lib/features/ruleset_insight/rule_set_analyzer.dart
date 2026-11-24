@@ -318,7 +318,8 @@ class RuleSetAnalyzer {
       final raw = lines[i];
       if (raw.trim().isEmpty) continue;
       if (!raw.startsWith(' ') && !raw.startsWith('\t')) {
-        if (!raw.trimLeft().startsWith('#')) break;
+        final head = raw.trimLeft();
+        if (!head.startsWith('#') && !head.startsWith('- ')) break;
       }
       final trimmed = raw.trim();
       if (trimmed.startsWith('#')) {
@@ -515,33 +516,50 @@ class RuleSetAnalyzer {
     final publicIp = rules.where(
       (rule) => _ipRuleTypes.contains(rule.type) && !_isLocalIpRule(rule),
     );
-    if (publicIp.isEmpty) return;
-    final firstIp = publicIp
-        .map((rule) => rule.index)
-        .reduce((a, b) => a < b ? a : b);
-    final late = rules.where(
-      (rule) => _domainRuleTypes.contains(rule.type) && rule.index > firstIp,
-    );
-    if (late.isNotEmpty) {
-      warnings.add(
-        '共有 ${late.length} 条域名规则排在第 $firstIp 条公网 IP 规则之后，fake-ip 下可能先被 IP 规则截走',
+    if (publicIp.isNotEmpty) {
+      final firstIp = publicIp
+          .map((rule) => rule.index)
+          .reduce((a, b) => a < b ? a : b);
+      final late = rules.where(
+        (rule) => _domainRuleTypes.contains(rule.type) && rule.index > firstIp,
       );
+      if (late.isNotEmpty) {
+        warnings.add(
+          '共有 ${late.length} 条域名规则排在第 $firstIp 条公网 IP 规则之后，fake-ip 下可能先被 IP 规则截取',
+        );
+      }
     }
+
+    final suffixIndex = <String, int>{};
+    final keywordIndex = <String, int>{};
+    for (final rule in rules) {
+      if (rule.type == 'DOMAIN-SUFFIX') {
+        suffixIndex.putIfAbsent(rule.value.toLowerCase(), () => rule.index);
+      } else if (rule.type == 'DOMAIN-KEYWORD') {
+        keywordIndex.putIfAbsent(rule.value.toLowerCase(), () => rule.index);
+      }
+    }
+    if (suffixIndex.isEmpty && keywordIndex.isEmpty) return;
 
     for (final rule in rules) {
       if (rule.type != 'DOMAIN') continue;
-      for (final earlier in rules) {
-        if (earlier.index >= rule.index) break;
-        if (earlier.type == 'DOMAIN-SUFFIX' &&
-            rule.value.endsWith('.${earlier.value}')) {
+      final value = rule.value.toLowerCase();
+      final parts = value.split('.');
+      for (var i = 1; i < parts.length; i++) {
+        final hit = suffixIndex[parts.sublist(i).join('.')];
+        if (hit != null && hit < rule.index) {
           warnings.add(
-            '第 ${rule.index} 条 DOMAIN,${rule.value} 被第 ${earlier.index} 条 DOMAIN-SUFFIX,${earlier.value} 覆盖，永不生效',
+            '第 ${rule.index} 条 DOMAIN,${rule.value} 被第 $hit 条 DOMAIN-SUFFIX 覆盖，永不生效',
           );
-        } else if (earlier.type == 'DOMAIN-KEYWORD' &&
-            rule.value.contains(earlier.value)) {
+          break;
+        }
+      }
+      for (final entry in keywordIndex.entries) {
+        if (entry.value < rule.index && value.contains(entry.key)) {
           warnings.add(
-            '第 ${rule.index} 条 DOMAIN,${rule.value} 被第 ${earlier.index} 条 DOMAIN-KEYWORD,${earlier.value} 覆盖，永不生效',
+            '第 ${rule.index} 条 DOMAIN,${rule.value} 被第 ${entry.value} 条 DOMAIN-KEYWORD 覆盖，永不生效',
           );
+          break;
         }
       }
     }
@@ -697,10 +715,15 @@ class RuleSetDiagrams {
     return buffer.toString();
   }
 
-  static List<String> detailFlows(RuleSetReport report, {int chunk = 22}) {
+  static List<String> detailFlows(
+    RuleSetReport report, {
+    int chunk = 22,
+    int maxDiagrams = 12,
+  }) {
     final diagrams = <String>[];
     for (final section in report.sections) {
       for (var start = 0; start < section.rules.length; start += chunk) {
+        if (diagrams.length >= maxDiagrams) return diagrams;
         final slice = section.rules.skip(start).take(chunk).toList();
         final buffer = StringBuffer()..writeln('flowchart TD');
         String? previous;

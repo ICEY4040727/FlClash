@@ -7062,6 +7062,12 @@ abstract class AppLocalizations {
   /// **'Source'**
   String get ruleSetInsightSource;
 
+  /// No description provided for @ruleSetInsightMoreIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'and {count} more'**
+  String ruleSetInsightMoreIssues(int count);
+
   /// No description provided for @ruleSetInsightServerChainRefresh.
   ///
   /// In en, this message translates to:

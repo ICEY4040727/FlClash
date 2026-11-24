@@ -3916,6 +3916,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get ruleSetInsightSource => 'Source';
 
   @override
+  String ruleSetInsightMoreIssues(int count) {
+    return 'and $count more';
+  }
+
+  @override
   String get ruleSetInsightServerChainRefresh => 'Refresh server chain';
 
   @override

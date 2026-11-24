@@ -39,6 +39,22 @@ rules:
   - MATCH,Proxy
 ''';
 
+const _topLevelRules = '''
+proxies:
+  - name: "JP"
+    type: socks5
+    server: 1.2.3.4
+    port: 1080
+proxy-groups:
+  - name: "Proxy"
+    type: select
+    proxies: ["JP", "DIRECT"]
+rules:
+- DOMAIN-SUFFIX,ads.example.com,REJECT
+- DOMAIN,app.example.com,Proxy
+- MATCH,Proxy
+''';
+
 const _wireguard = '''
 proxies:
   - name: "WG-JP"
@@ -130,7 +146,14 @@ void main() {
       expect(report.errors.any((e) => e.contains('循环')), isTrue);
     });
 
-test('reads wireguard nodes, provider counts and node types', () {
+    test('reads a rules list that is not indented', () {
+      final report = RuleSetAnalyzer.analyze(_topLevelRules);
+      expect(report.ruleCount, 3);
+      expect(report.sections.length, 1);
+      expect(report.targetCounts['Proxy'], 2);
+    });
+
+    test('reads wireguard nodes, provider counts and node types', () {
       final report = RuleSetAnalyzer.analyze(_wireguard);
       expect(report.parsed, isTrue);
       expect(report.proxyCount, 2);

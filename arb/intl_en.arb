@@ -1273,6 +1273,14 @@
   "ruleSetInsightInternet": "Internet",
   "ruleSetInsightRouteRules": "Route rules",
   "ruleSetInsightSource": "Source",
+  "ruleSetInsightMoreIssues": "and {count} more",
+  "@ruleSetInsightMoreIssues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "ruleSetInsightServerChainRefresh": "Refresh server chain",
   "ruleSetInsightServerChainRefreshing": "Reading the server…",
   "ruleSetInsightServerChainStale": "This summary is from another host — rerun tool/fetch-server-chain.ps1",
