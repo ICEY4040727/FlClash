@@ -4012,6 +4012,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get ruleSetInsightRouteRules => 'Route rules';
 
   @override
+  String get ruleSetInsightServerChainRefresh => 'Refresh server chain';
+
+  @override
+  String get ruleSetInsightServerChainRefreshing => 'Reading the server…';
+
+  @override
   String get ruleSetInsightServerChainStale =>
       'This summary is from another host — rerun tool/fetch-server-chain.ps1';
 

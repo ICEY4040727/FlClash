@@ -3788,6 +3788,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ruleSetInsightRouteRules => '路由规则';
 
   @override
+  String get ruleSetInsightServerChainRefresh => '刷新服务端链路';
+
+  @override
+  String get ruleSetInsightServerChainRefreshing => '正在读取服务端…';
+
+  @override
   String get ruleSetInsightServerChainStale =>
       '该摘要来自其他服务器，请重跑 tool/fetch-server-chain.ps1';
 

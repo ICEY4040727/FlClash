@@ -5,6 +5,7 @@ import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/features/ruleset_insight/rule_set_analyzer.dart';
 import 'package:fl_clash/features/ruleset_insight/rule_set_diagram.dart';
 import 'package:fl_clash/features/ruleset_insight/server_chain.dart';
+import 'package:fl_clash/features/ruleset_insight/server_chain_fetcher.dart';
 import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/views/dashboard/style.dart';
 import 'package:fl_clash/widgets/widgets.dart';
@@ -186,7 +187,7 @@ class _Figure extends StatelessWidget {
   }
 }
 
-class RuleSetInsightSheet extends StatelessWidget {
+class RuleSetInsightSheet extends StatefulWidget {
   const RuleSetInsightSheet({
     super.key,
     required this.report,
@@ -197,7 +198,44 @@ class RuleSetInsightSheet extends StatelessWidget {
   final ServerChain? chain;
 
   @override
+  State<RuleSetInsightSheet> createState() => _RuleSetInsightSheetState();
+}
+
+class _RuleSetInsightSheetState extends State<RuleSetInsightSheet> {
+  ServerChain? _chain;
+  bool _refreshing = false;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _chain = widget.chain;
+  }
+
+  Future<void> _refreshServerChain() async {
+    if (_refreshing) return;
+    setState(() {
+      _refreshing = true;
+      _error = null;
+    });
+    final result = await ServerChainFetcher.refresh(
+      widget.report.proxyServers,
+    );
+    if (!mounted) return;
+    setState(() {
+      _refreshing = false;
+      if (result.ok) {
+        _chain = result.chain;
+      } else {
+        _error = result.error;
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final report = widget.report;
+    final chain = _chain;
     final appLocalizations = context.appLocalizations;
     return Scaffold(
       title: appLocalizations.ruleSetInsight,
@@ -214,7 +252,7 @@ class RuleSetInsightSheet extends StatelessWidget {
                 const SizedBox(height: 12),
                 _SheetHeader(title: appLocalizations.ruleSetInsightServerChain),
                 if (chain != null) ...[
-                  if (!chain!.matchesServers(report.proxyServers))
+                  if (!chain.matchesServers(report.proxyServers))
                     Padding(
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 6),
                       child: Text(
@@ -224,12 +262,12 @@ class RuleSetInsightSheet extends StatelessWidget {
                             .copyWith(color: context.colorScheme.error),
                       ),
                     ),
-                  ServerChainDiagram(chain: chain!),
-                  if (chain!.snapshotLabel != null)
+                  ServerChainDiagram(chain: chain),
+                  if (chain.snapshotLabel != null)
                     Padding(
                       padding: const EdgeInsets.fromLTRB(16, 2, 16, 0),
                       child: Text(
-                        chain!.snapshotLabel!,
+                        chain.snapshotLabel!,
                         style: AppTextStyle.caption2
                             .of(context)
                             .copyWith(
@@ -247,6 +285,15 @@ class RuleSetInsightSheet extends StatelessWidget {
                           .copyWith(color: context.colorScheme.onSurfaceVariant),
                     ),
                   ),
+                ListItem(
+                  title: Text(
+                    _refreshing
+                        ? appLocalizations.ruleSetInsightServerChainRefreshing
+                        : appLocalizations.ruleSetInsightServerChainRefresh,
+                  ),
+                  subtitle: _error == null ? null : Text(_error!),
+                  onTap: _refreshing ? null : _refreshServerChain,
+                ),
                 const SizedBox(height: 8),
                 _SheetHeader(title: appLocalizations.ruleSetInsightStructure),
                 RuleStructureDiagram(report: report),

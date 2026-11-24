@@ -1157,6 +1157,8 @@
   "ruleSetInsightServerChainMissing": "运行 tool/fetch-server-chain.ps1 可补充服务端链路（只读摘要）",
   "ruleSetInsightInternet": "互联网",
   "ruleSetInsightRouteRules": "路由规则",
+  "ruleSetInsightServerChainRefresh": "刷新服务端链路",
+  "ruleSetInsightServerChainRefreshing": "正在读取服务端…",
   "ruleSetInsightServerChainStale": "该摘要来自其他服务器，请重跑 tool/fetch-server-chain.ps1",
   "ruleSetInsightStructure": "结构",
   "ruleSetInsightFlow": "分段流转",

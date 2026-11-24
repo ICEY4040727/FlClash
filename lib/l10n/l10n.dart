@@ -7056,6 +7056,18 @@ abstract class AppLocalizations {
   /// **'Route rules'**
   String get ruleSetInsightRouteRules;
 
+  /// No description provided for @ruleSetInsightServerChainRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh server chain'**
+  String get ruleSetInsightServerChainRefresh;
+
+  /// No description provided for @ruleSetInsightServerChainRefreshing.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading the server…'**
+  String get ruleSetInsightServerChainRefreshing;
+
   /// No description provided for @ruleSetInsightServerChainStale.
   ///
   /// In en, this message translates to:
