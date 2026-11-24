@@ -1,12 +1,16 @@
 param(
-    [string]$SshHost = "4.216.184.217",
-    [string]$User = "azureuser",
+    [string]$SshHost = $env:FLCLASH_SERVER_HOST,
+    [string]$User = $(if ($env:FLCLASH_SERVER_USER) { $env:FLCLASH_SERVER_USER } else { "azureuser" }),
     [string]$KeyPath = "$env:USERPROFILE\.ssh\vps_key.pem",
     [string]$ConfigPath = "/etc/sing-box/config.json",
     [string]$Out = "$env:APPDATA\com.follow\clash\server-chain.json"
 )
 
 $ErrorActionPreference = "Stop"
+
+if ([string]::IsNullOrWhiteSpace($SshHost)) {
+    throw "Pass -SshHost <ip-or-host> or set `$env:FLCLASH_SERVER_HOST"
+}
 
 if (-not (Test-Path -LiteralPath $KeyPath)) {
     throw "SSH key not found: $KeyPath"
