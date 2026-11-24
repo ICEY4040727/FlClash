@@ -1273,6 +1273,7 @@
   "ruleSetInsightInternet": "Internet",
   "ruleSetInsightRouteRules": "Route rules",
   "ruleSetInsightSource": "Source",
+  "ruleSetInsightSearchHint": "Search domain, type or target",
   "ruleSetInsightMoreIssues": "and {count} more",
   "@ruleSetInsightMoreIssues": {
     "placeholders": {

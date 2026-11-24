@@ -7062,6 +7062,12 @@ abstract class AppLocalizations {
   /// **'Source'**
   String get ruleSetInsightSource;
 
+  /// No description provided for @ruleSetInsightSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search domain, type or target'**
+  String get ruleSetInsightSearchHint;
+
   /// No description provided for @ruleSetInsightMoreIssues.
   ///
   /// In en, this message translates to:

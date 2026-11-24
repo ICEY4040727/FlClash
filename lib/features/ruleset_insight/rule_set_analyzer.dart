@@ -789,3 +789,15 @@ class RuleSetDiagrams {
     return buffer.toString();
   }
 }
+
+List<RuleEntry> searchRules(List<RuleEntry> rules, String query) {
+  final needle = query.trim().toLowerCase();
+  if (needle.isEmpty) return rules;
+  return [
+    for (final rule in rules)
+      if (rule.value.toLowerCase().contains(needle) ||
+          rule.target.toLowerCase().contains(needle) ||
+          rule.type.toLowerCase() == needle)
+        rule,
+  ];
+}

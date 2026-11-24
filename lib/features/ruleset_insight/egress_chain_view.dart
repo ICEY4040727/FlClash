@@ -4,9 +4,10 @@ import 'package:fl_clash/ui/ui.dart';
 import 'package:flutter/widgets.dart';
 
 class EgressChainList extends StatelessWidget {
-  const EgressChainList({super.key, required this.chains});
+  const EgressChainList({super.key, required this.chains, this.onSelect});
 
   final List<EgressChain> chains;
+  final ValueChanged<EgressChain>? onSelect;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,10 @@ class EgressChainList extends StatelessWidget {
         spacing: 10,
         children: [
           for (final chain in chains)
-            Column(
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: onSelect == null ? null : () => onSelect!(chain),
+              child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 4,
               children: [
@@ -60,6 +64,7 @@ class EgressChainList extends StatelessWidget {
                         .copyWith(color: context.colorScheme.onSurfaceVariant),
                   ),
               ],
+              ),
             ),
         ],
       ),

@@ -3841,6 +3841,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get ruleSetInsightSource => 'Source';
 
   @override
+  String get ruleSetInsightSearchHint => 'Search domain, type or target';
+
+  @override
   String ruleSetInsightMoreIssues(int count) {
     return 'and $count more';
   }

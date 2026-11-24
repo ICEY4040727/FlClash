@@ -6,7 +6,7 @@ import 'package:fl_clash/features/ruleset_insight/rule_set_analyzer.dart';
 import 'package:fl_clash/features/ruleset_insight/rule_set_diagram.dart';
 import 'package:fl_clash/features/ruleset_insight/egress_chain.dart';
 import 'package:fl_clash/features/ruleset_insight/egress_chain_view.dart';
-import 'package:fl_clash/features/ruleset_insight/rule_source_view.dart';
+import 'package:fl_clash/features/ruleset_insight/rule_list_view.dart';
 import 'package:fl_clash/features/ruleset_insight/server_chain.dart';
 import 'package:fl_clash/features/ruleset_insight/server_chain_fetcher.dart';
 import 'package:fl_clash/providers/providers.dart';
@@ -332,6 +332,14 @@ class _RuleSetInsightSheetState extends State<RuleSetInsightSheet> {
                         selected: selected,
                         serverChain: chain,
                       ),
+                      onSelect: (item) => showRuleListSheet(
+                        context,
+                        report: report,
+                        rules: report.rules
+                            .where((rule) => rule.target == item.target)
+                            .toList(),
+                        title: item.target,
+                      ),
                     );
                   },
                 ),
@@ -344,7 +352,12 @@ class _RuleSetInsightSheetState extends State<RuleSetInsightSheet> {
                       '${section.topTargets} · ${section.lineRange}',
                     ),
                     trailing: Text('${section.rules.length}'),
-                    onTap: () => showRuleSourceSheet(context, report, section),
+                    onTap: () => showRuleListSheet(
+                      context,
+                      report: report,
+                      rules: section.rules,
+                      title: section.title,
+                    ),
                   ),
                 const SizedBox(height: 12),
                 _SheetHeader(title: appLocalizations.ruleSetInsightChecks),

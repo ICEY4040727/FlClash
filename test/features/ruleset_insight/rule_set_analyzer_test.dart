@@ -165,6 +165,15 @@ void main() {
       expect(report.errors, isEmpty);
     });
 
+    test('searches rules by value, type and target', () {
+      final report = RuleSetAnalyzer.analyze(_basic);
+      expect(searchRules(report.rules, 'google').length, 3);
+      expect(searchRules(report.rules, 'reject').length, 1);
+      expect(searchRules(report.rules, 'AI').length, 2);
+      expect(searchRules(report.rules, 'domain-suffix').length, 4);
+      expect(searchRules(report.rules, '  ').length, report.ruleCount);
+    });
+
     test('emits mermaid diagrams', () {
       final report = RuleSetAnalyzer.analyze(_basic);
       expect(RuleSetDiagrams.structure(report), startsWith('classDiagram'));
