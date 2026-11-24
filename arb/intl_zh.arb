@@ -1152,6 +1152,8 @@
   "ruleSetInsightNodes": "节点",
   "ruleSetInsightGroups": "策略组",
   "ruleSetInsightProviders": "规则集",
+  "ruleSetInsightStructure": "结构",
+  "ruleSetInsightFlow": "分段流转",
   "ruleSetInsightCopy": "复制 Mermaid 报告",
   "ruleSetInsightCopyHint": "包含结构、流转与分段明细"
 }

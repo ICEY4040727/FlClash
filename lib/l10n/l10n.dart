@@ -7026,6 +7026,18 @@ abstract class AppLocalizations {
   /// **'Providers'**
   String get ruleSetInsightProviders;
 
+  /// No description provided for @ruleSetInsightStructure.
+  ///
+  /// In en, this message translates to:
+  /// **'Structure'**
+  String get ruleSetInsightStructure;
+
+  /// No description provided for @ruleSetInsightFlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Section flow'**
+  String get ruleSetInsightFlow;
+
   /// No description provided for @ruleSetInsightCopy.
   ///
   /// In en, this message translates to:

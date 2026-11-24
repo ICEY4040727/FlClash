@@ -3996,6 +3996,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get ruleSetInsightProviders => 'Providers';
 
   @override
+  String get ruleSetInsightStructure => 'Structure';
+
+  @override
+  String get ruleSetInsightFlow => 'Section flow';
+
+  @override
   String get ruleSetInsightCopy => 'Copy Mermaid report';
 
   @override

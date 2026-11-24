@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/features/ruleset_insight/rule_set_analyzer.dart';
+import 'package:fl_clash/features/ruleset_insight/rule_set_diagram.dart';
 import 'package:fl_clash/views/dashboard/style.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/foundation.dart';
@@ -91,6 +92,8 @@ class _RuleSetInsightCardState extends State<RuleSetInsightCard> {
                   maxLines: 1,
                   style: DashboardText.label(context),
                 ),
+              const SizedBox(width: 4),
+              Text('›', style: DashboardText.label(context)),
             ],
           ),
           if (report == null)
@@ -178,6 +181,12 @@ class RuleSetInsightSheet extends StatelessWidget {
             sliver: SliverList.list(
               children: [
                 _SummaryRows(report: report),
+                const SizedBox(height: 12),
+                _SheetHeader(title: appLocalizations.ruleSetInsightStructure),
+                RuleStructureDiagram(report: report),
+                const SizedBox(height: 8),
+                _SheetHeader(title: appLocalizations.ruleSetInsightFlow),
+                RuleFlowDiagram(report: report),
                 const SizedBox(height: 12),
                 _SheetHeader(title: appLocalizations.ruleSetInsightSections),
                 for (final section in report.sections)
