@@ -1163,6 +1163,7 @@
   "ruleSetInsightServerChainStale": "该摘要来自其他服务器，请重跑 tool/fetch-server-chain.ps1",
   "ruleSetInsightStructure": "结构",
   "ruleSetInsightFlow": "分段流转",
+  "ruleSetInsightEgressChains": "出口链路",
   "ruleSetInsightCopy": "复制 Mermaid 报告",
   "ruleSetInsightCopyHint": "包含结构、流转与分段明细"
 }

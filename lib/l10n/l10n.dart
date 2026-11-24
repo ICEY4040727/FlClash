@@ -7092,6 +7092,12 @@ abstract class AppLocalizations {
   /// **'Section flow'**
   String get ruleSetInsightFlow;
 
+  /// No description provided for @ruleSetInsightEgressChains.
+  ///
+  /// In en, this message translates to:
+  /// **'Egress chains'**
+  String get ruleSetInsightEgressChains;
+
   /// No description provided for @ruleSetInsightCopy.
   ///
   /// In en, this message translates to:

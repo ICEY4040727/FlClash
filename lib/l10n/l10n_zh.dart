@@ -3807,6 +3807,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ruleSetInsightFlow => '分段流转';
 
   @override
+  String get ruleSetInsightEgressChains => '出口链路';
+
+  @override
   String get ruleSetInsightCopy => '复制 Mermaid 报告';
 
   @override

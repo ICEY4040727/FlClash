@@ -1278,6 +1278,7 @@
   "ruleSetInsightServerChainStale": "This summary is from another host — rerun tool/fetch-server-chain.ps1",
   "ruleSetInsightStructure": "Structure",
   "ruleSetInsightFlow": "Section flow",
+  "ruleSetInsightEgressChains": "Egress chains",
   "ruleSetInsightCopy": "Copy Mermaid report",
   "ruleSetInsightCopyHint": "Structure, flow and per-section details"
 }

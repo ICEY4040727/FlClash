@@ -83,6 +83,32 @@ class RuleSection {
   }
 }
 
+class ProxyInfo {
+  const ProxyInfo({
+    required this.name,
+    required this.type,
+    required this.server,
+    required this.port,
+    this.dialerProxy,
+  });
+
+  final String name;
+  final String type;
+  final String server;
+  final int? port;
+  final String? dialerProxy;
+
+  String get endpoint => server.isEmpty ? type : '$server${port == null ? '' : ':$port'}';
+}
+
+class GroupInfo {
+  const GroupInfo({required this.name, required this.type, required this.members});
+
+  final String name;
+  final String type;
+  final List<String> members;
+}
+
 class RuleSetReport {
   const RuleSetReport({
     required this.rules,
@@ -94,6 +120,8 @@ class RuleSetReport {
     required this.nodeTypes,
     required this.proxyServers,
     required this.sourceLines,
+    required this.proxyInfos,
+    required this.groupInfos,
     required this.typeCounts,
     required this.targetCounts,
     required this.errors,
@@ -111,6 +139,8 @@ class RuleSetReport {
   final Map<String, int> nodeTypes;
   final List<String> proxyServers;
   final List<String> sourceLines;
+  final List<ProxyInfo> proxyInfos;
+  final List<GroupInfo> groupInfos;
   final Map<String, int> typeCounts;
   final Map<String, int> targetCounts;
   final List<String> errors;
@@ -135,6 +165,8 @@ class RuleSetAnalyzer {
     var proxyProviderCount = 0;
     final nodeTypes = <String, int>{};
     final proxyServers = <String>[];
+    final proxyInfos = <ProxyInfo>[];
+    final groupInfos = <GroupInfo>[];
     String? parseError;
     var parsed = false;
     final groupNames = <String>{};
@@ -161,6 +193,15 @@ class RuleSetAnalyzer {
             nodeTypes[type] = (nodeTypes[type] ?? 0) + 1;
             final server = proxy['server']?.toString();
             if (server != null && server.isNotEmpty) proxyServers.add(server);
+            proxyInfos.add(
+              ProxyInfo(
+                name: proxy['name'].toString(),
+                type: type,
+                server: server ?? '',
+                port: int.tryParse('${proxy['port'] ?? ''}'),
+                dialerProxy: proxy['dialer-proxy']?.toString(),
+              ),
+            );
           }
         }
         for (final group in groups) {
@@ -175,6 +216,13 @@ class RuleSetAnalyzer {
             members.add('provider:$used');
           }
           groupMembers[name] = members;
+          groupInfos.add(
+            GroupInfo(
+              name: name,
+              type: (group['type'] ?? 'select').toString(),
+              members: members,
+            ),
+          );
         }
         if (providers is Map) {
           for (final key in providers.keys) {
@@ -223,6 +271,8 @@ class RuleSetAnalyzer {
       proxyProviderCount: proxyProviderCount,
       nodeTypes: nodeTypes,
       proxyServers: proxyServers,
+      proxyInfos: proxyInfos,
+      groupInfos: groupInfos,
       sourceLines: text.split('\n'),
       typeCounts: typeCounts,
       targetCounts: targetCounts,

@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/features/ruleset_insight/rule_set_analyzer.dart';
 import 'package:fl_clash/features/ruleset_insight/rule_set_diagram.dart';
+import 'package:fl_clash/features/ruleset_insight/egress_chain.dart';
+import 'package:fl_clash/features/ruleset_insight/egress_chain_view.dart';
 import 'package:fl_clash/features/ruleset_insight/rule_source_view.dart';
 import 'package:fl_clash/features/ruleset_insight/server_chain.dart';
 import 'package:fl_clash/features/ruleset_insight/server_chain_fetcher.dart';
@@ -316,6 +318,23 @@ class _RuleSetInsightSheetState extends State<RuleSetInsightSheet> {
                 const SizedBox(height: 8),
                 _SheetHeader(title: appLocalizations.ruleSetInsightFlow),
                 RuleFlowDiagram(report: report),
+                const SizedBox(height: 12),
+                _SheetHeader(title: appLocalizations.ruleSetInsightEgressChains),
+                Consumer(
+                  builder: (context, ref, _) {
+                    final selected = <String, String>{
+                      for (final group in ref.watch(groupsProvider))
+                        if (group.now != null) group.name: group.now!,
+                    };
+                    return EgressChainList(
+                      chains: buildEgressChains(
+                        report: report,
+                        selected: selected,
+                        serverChain: chain,
+                      ),
+                    );
+                  },
+                ),
                 const SizedBox(height: 12),
                 _SheetHeader(title: appLocalizations.ruleSetInsightSections),
                 for (final section in report.sections)
