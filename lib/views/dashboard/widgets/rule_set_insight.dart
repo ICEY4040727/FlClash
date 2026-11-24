@@ -213,9 +213,31 @@ class RuleSetInsightSheet extends StatelessWidget {
                 _SummaryRows(report: report),
                 const SizedBox(height: 12),
                 _SheetHeader(title: appLocalizations.ruleSetInsightServerChain),
-                if (chain != null)
-                  ServerChainDiagram(chain: chain!)
-                else
+                if (chain != null) ...[
+                  if (!chain!.matchesServers(report.proxyServers))
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 6),
+                      child: Text(
+                        appLocalizations.ruleSetInsightServerChainStale,
+                        style: AppTextStyle.caption1
+                            .of(context)
+                            .copyWith(color: context.colorScheme.error),
+                      ),
+                    ),
+                  ServerChainDiagram(chain: chain!),
+                  if (chain!.snapshotLabel != null)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 2, 16, 0),
+                      child: Text(
+                        chain!.snapshotLabel!,
+                        style: AppTextStyle.caption2
+                            .of(context)
+                            .copyWith(
+                              color: context.colorScheme.onSurfaceVariant,
+                            ),
+                      ),
+                    ),
+                ] else
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(

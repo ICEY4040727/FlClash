@@ -46,6 +46,20 @@ class ServerChain {
 
   String get summary => '$inboundLabel → $egressLabel';
 
+  bool matchesServers(List<String> servers) {
+    final value = host?.toLowerCase();
+    if (value == null || value.isEmpty) return true;
+    return servers.any((item) => item.toLowerCase() == value);
+  }
+
+  String? get snapshotLabel {
+    final at = generatedAt?.toLocal();
+    if (at == null) return host;
+    String two(int v) => v.toString().padLeft(2, '0');
+    final stamp = '${at.year}-${two(at.month)}-${two(at.day)} ${two(at.hour)}:${two(at.minute)}';
+    return host == null ? stamp : '$host · $stamp';
+  }
+
   static Future<ServerChain?> load() async {
     try {
       final home = await appPath.homeDirPath;

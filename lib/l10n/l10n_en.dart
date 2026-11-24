@@ -4018,6 +4018,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ruleSetInsightRouteRules => 'Route rules';
 
   @override
+  String get ruleSetInsightServerChainStale =>
+      'This summary is from another host — rerun tool/fetch-server-chain.ps1';
+
+  @override
   String get ruleSetInsightStructure => 'Structure';
 
   @override

@@ -1272,6 +1272,7 @@
   "ruleSetInsightServerChainMissing": "Run tool/fetch-server-chain.ps1 to add the server side.",
   "ruleSetInsightInternet": "Internet",
   "ruleSetInsightRouteRules": "Route rules",
+  "ruleSetInsightServerChainStale": "This summary is from another host — rerun tool/fetch-server-chain.ps1",
   "ruleSetInsightStructure": "Structure",
   "ruleSetInsightFlow": "Section flow",
   "ruleSetInsightCopy": "Copy Mermaid report",

@@ -133,6 +133,7 @@ test('reads wireguard nodes, provider counts and node types', () {
       expect(report.parsed, isTrue);
       expect(report.proxyCount, 2);
       expect(report.nodeTypes['wireguard'], 1);
+      expect(report.proxyServers, contains('203.0.113.10'));
       expect(report.nodeTypes['anytls'], 1);
       expect(report.proxyProviderCount, 1);
       expect(report.targetCounts['WG-JP'], 2);

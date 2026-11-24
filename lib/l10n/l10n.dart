@@ -7056,6 +7056,12 @@ abstract class AppLocalizations {
   /// **'Route rules'**
   String get ruleSetInsightRouteRules;
 
+  /// No description provided for @ruleSetInsightServerChainStale.
+  ///
+  /// In en, this message translates to:
+  /// **'This summary is from another host — rerun tool/fetch-server-chain.ps1'**
+  String get ruleSetInsightServerChainStale;
+
   /// No description provided for @ruleSetInsightStructure.
   ///
   /// In en, this message translates to:

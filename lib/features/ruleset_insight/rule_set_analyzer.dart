@@ -81,6 +81,7 @@ class RuleSetReport {
     required this.providerCount,
     required this.proxyProviderCount,
     required this.nodeTypes,
+    required this.proxyServers,
     required this.typeCounts,
     required this.targetCounts,
     required this.errors,
@@ -96,6 +97,7 @@ class RuleSetReport {
   final int providerCount;
   final int proxyProviderCount;
   final Map<String, int> nodeTypes;
+  final List<String> proxyServers;
   final Map<String, int> typeCounts;
   final Map<String, int> targetCounts;
   final List<String> errors;
@@ -119,6 +121,7 @@ class RuleSetAnalyzer {
     var providerCount = 0;
     var proxyProviderCount = 0;
     final nodeTypes = <String, int>{};
+    final proxyServers = <String>[];
     String? parseError;
     var parsed = false;
     final groupNames = <String>{};
@@ -143,6 +146,8 @@ class RuleSetAnalyzer {
             proxyNames.add(proxy['name'].toString());
             final type = (proxy['type'] ?? 'unknown').toString();
             nodeTypes[type] = (nodeTypes[type] ?? 0) + 1;
+            final server = proxy['server']?.toString();
+            if (server != null && server.isNotEmpty) proxyServers.add(server);
           }
         }
         for (final group in groups) {
@@ -204,6 +209,7 @@ class RuleSetAnalyzer {
       providerCount: providerCount,
       proxyProviderCount: proxyProviderCount,
       nodeTypes: nodeTypes,
+      proxyServers: proxyServers,
       typeCounts: typeCounts,
       targetCounts: targetCounts,
       errors: errors,

@@ -36,6 +36,19 @@ void main() {
     expect(chain.summary, contains('wireguard'));
   });
 
+  test('detects a summary from another host', () {
+    final chain = ServerChain.fromJson({
+      'host': '203.0.113.10',
+      'inbounds': [],
+      'endpoints': [],
+      'outbounds': [],
+      'rules': [],
+    });
+    expect(chain.matchesServers(['4.216.184.217']), isFalse);
+    expect(chain.matchesServers(['203.0.113.10']), isTrue);
+    expect(chain.matchesServers(['203.0.113.10', '1.1.1.1']), isTrue);
+  });
+
   test('falls back to the plain outbound when no endpoint matches', () {
     final chain = ServerChain.fromJson({
       'inbounds': [
