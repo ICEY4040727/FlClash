@@ -79,6 +79,8 @@ class RuleSetReport {
     required this.proxyCount,
     required this.groupCount,
     required this.providerCount,
+    required this.proxyProviderCount,
+    required this.nodeTypes,
     required this.typeCounts,
     required this.targetCounts,
     required this.errors,
@@ -92,6 +94,8 @@ class RuleSetReport {
   final int proxyCount;
   final int groupCount;
   final int providerCount;
+  final int proxyProviderCount;
+  final Map<String, int> nodeTypes;
   final Map<String, int> typeCounts;
   final Map<String, int> targetCounts;
   final List<String> errors;
@@ -113,6 +117,8 @@ class RuleSetAnalyzer {
     var proxyCount = 0;
     var groupCount = 0;
     var providerCount = 0;
+    var proxyProviderCount = 0;
+    final nodeTypes = <String, int>{};
     String? parseError;
     var parsed = false;
     final groupNames = <String>{};
@@ -130,9 +136,13 @@ class RuleSetAnalyzer {
         proxyCount = proxies.length;
         groupCount = groups.length;
         providerCount = providers is Map ? providers.length : 0;
+      final proxyProviders = document['proxy-providers'];
+      proxyProviderCount = proxyProviders is Map ? proxyProviders.length : 0;
         for (final proxy in proxies) {
           if (proxy is Map && proxy['name'] != null) {
             proxyNames.add(proxy['name'].toString());
+            final type = (proxy['type'] ?? 'unknown').toString();
+            nodeTypes[type] = (nodeTypes[type] ?? 0) + 1;
           }
         }
         for (final group in groups) {
@@ -192,6 +202,8 @@ class RuleSetAnalyzer {
       proxyCount: proxyCount,
       groupCount: groupCount,
       providerCount: providerCount,
+      proxyProviderCount: proxyProviderCount,
+      nodeTypes: nodeTypes,
       typeCounts: typeCounts,
       targetCounts: targetCounts,
       errors: errors,
@@ -558,6 +570,23 @@ class RuleSetDiagrams {
       buffer
         ..writeln('  class Providers["规则集 ${report.providerCount} 个"]')
         ..writeln('  Config *-- Providers');
+    }
+    if (report.proxyProviderCount > 0) {
+      buffer
+        ..writeln(
+          '  class ProxyProviders["代理提供者 ${report.proxyProviderCount} 个"]',
+        )
+        ..writeln('  Config *-- ProxyProviders');
+    }
+    if (report.nodeTypes.isNotEmpty) {
+      final entries = report.nodeTypes.entries.toList()
+        ..sort((a, b) => b.value.compareTo(a.value));
+      for (final entry in entries) {
+        buffer.writeln(
+          '  class T_${mermaidId(entry.key)}["${mermaidLabel(entry.key)} ${entry.value} 个"]',
+        );
+        buffer.writeln('  Proxies *-- T_${mermaidId(entry.key)}');
+      }
     }
     buffer
       ..writeln('  class Rules["规则 ${report.ruleCount} 条 · 首条命中即止"]')

@@ -4049,6 +4049,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get ruleSetInsightProviders => 'Providers';
 
   @override
+  String get ruleSetInsightProxyProviders => 'Proxy providers';
+
+  @override
   String get ruleSetInsightStructure => 'Structure';
 
   @override

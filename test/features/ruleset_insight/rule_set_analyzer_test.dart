@@ -39,6 +39,40 @@ rules:
   - MATCH,Proxy
 ''';
 
+const _wireguard = '''
+proxies:
+  - name: "WG-JP"
+    type: wireguard
+    server: 203.0.113.10
+    port: 51820
+    ip: 172.16.0.2/32
+    private-key: "aaa"
+    public-key: "bbb"
+    udp: true
+    peers:
+      - server: 203.0.113.10
+        port: 51820
+        public-key: "bbb"
+        allowed-ips: ["0.0.0.0/0"]
+  - name: "Azure"
+    type: anytls
+    server: 198.51.100.7
+    port: 443
+    password: "x"
+proxy-providers:
+  wg:
+    type: file
+    path: ./wg.yaml
+proxy-groups:
+  - name: "Proxy"
+    type: select
+    proxies: ["WG-JP", "Azure", "DIRECT"]
+rules:
+  - AND,((NETWORK,UDP),(DST-PORT,51820)),WG-JP
+  - DOMAIN-SUFFIX,ip.example.com,WG-JP
+  - MATCH,Proxy
+''';
+
 const _broken = '''
 proxies:
   - name: "JP"
@@ -92,6 +126,17 @@ void main() {
       final report = RuleSetAnalyzer.analyze(_broken);
       expect(report.errors.any((e) => e.contains('Missing')), isTrue);
       expect(report.errors.any((e) => e.contains('循环')), isTrue);
+    });
+
+test('reads wireguard nodes, provider counts and node types', () {
+      final report = RuleSetAnalyzer.analyze(_wireguard);
+      expect(report.parsed, isTrue);
+      expect(report.proxyCount, 2);
+      expect(report.nodeTypes['wireguard'], 1);
+      expect(report.nodeTypes['anytls'], 1);
+      expect(report.proxyProviderCount, 1);
+      expect(report.targetCounts['WG-JP'], 2);
+      expect(report.errors, isEmpty);
     });
 
     test('emits mermaid diagrams', () {

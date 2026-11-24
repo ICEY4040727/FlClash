@@ -40,9 +40,22 @@ class RuleStructureDiagram extends StatelessWidget {
             label: appLocalizations.ruleSetInsightProviders,
             value: '${report.providerCount}',
           ),
+          if (report.proxyProviderCount > 0)
+            _Chip(
+              label: appLocalizations.ruleSetInsightProxyProviders,
+              value: '${report.proxyProviderCount}',
+            ),
+          for (final entry in _nodeTypeEntries(report))
+            _Chip(label: entry.key, value: '${entry.value}'),
         ],
       ),
     );
+  }
+
+  List<MapEntry<String, int>> _nodeTypeEntries(RuleSetReport report) {
+    final entries = report.nodeTypes.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+    return entries.take(6).toList();
   }
 }
 

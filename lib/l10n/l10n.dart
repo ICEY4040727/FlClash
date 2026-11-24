@@ -7026,6 +7026,12 @@ abstract class AppLocalizations {
   /// **'Providers'**
   String get ruleSetInsightProviders;
 
+  /// No description provided for @ruleSetInsightProxyProviders.
+  ///
+  /// In en, this message translates to:
+  /// **'Proxy providers'**
+  String get ruleSetInsightProxyProviders;
+
   /// No description provided for @ruleSetInsightStructure.
   ///
   /// In en, this message translates to:

@@ -1267,6 +1267,7 @@
   "ruleSetInsightNodes": "Nodes",
   "ruleSetInsightGroups": "Groups",
   "ruleSetInsightProviders": "Providers",
+  "ruleSetInsightProxyProviders": "Proxy providers",
   "ruleSetInsightStructure": "Structure",
   "ruleSetInsightFlow": "Section flow",
   "ruleSetInsightCopy": "Copy Mermaid report",

@@ -3772,6 +3772,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ruleSetInsightProviders => '规则集';
 
   @override
+  String get ruleSetInsightProxyProviders => '代理提供者';
+
+  @override
   String get ruleSetInsightStructure => '结构';
 
   @override
