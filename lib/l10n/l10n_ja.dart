@@ -3825,6 +3825,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get ruleSetInsightProxyProviders => 'Proxy providers';
 
   @override
+  String get ruleSetInsightServerChain => 'Server chain';
+
+  @override
+  String get ruleSetInsightServerChainMissing =>
+      'Run tool/fetch-server-chain.ps1 to add the server side.';
+
+  @override
+  String get ruleSetInsightInternet => 'Internet';
+
+  @override
+  String get ruleSetInsightRouteRules => 'Route rules';
+
+  @override
   String get ruleSetInsightStructure => 'Structure';
 
   @override

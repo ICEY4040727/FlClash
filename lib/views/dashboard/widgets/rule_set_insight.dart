@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/features/ruleset_insight/rule_set_analyzer.dart';
 import 'package:fl_clash/features/ruleset_insight/rule_set_diagram.dart';
+import 'package:fl_clash/features/ruleset_insight/server_chain.dart';
 import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/views/dashboard/style.dart';
 import 'package:fl_clash/widgets/widgets.dart';
@@ -21,10 +22,14 @@ RuleSetReport? analyzeRuleSetFile(String path) {
   return RuleSetAnalyzer.analyze(file.readAsStringSync());
 }
 
-void showRuleSetInsightSheet(BuildContext context, RuleSetReport report) {
+void showRuleSetInsightSheet(
+  BuildContext context,
+  RuleSetReport report,
+  ServerChain? chain,
+) {
   showNestedSheet<void>(
     context,
-    builder: (_) => RuleSetInsightSheet(report: report),
+    builder: (_) => RuleSetInsightSheet(report: report, chain: chain),
   );
 }
 
@@ -38,6 +43,7 @@ class RuleSetInsightCard extends ConsumerStatefulWidget {
 
 class _RuleSetInsightCardState extends ConsumerState<RuleSetInsightCard> {
   RuleSetReport? _report;
+  ServerChain? _chain;
   bool _loading = true;
   int _generation = 0;
 
@@ -52,9 +58,11 @@ class _RuleSetInsightCardState extends ConsumerState<RuleSetInsightCard> {
     try {
       final path = await appPath.configFilePath;
       final report = await compute(analyzeRuleSetFile, path);
+      final chain = await ServerChain.load();
       if (!mounted || generation != _generation) return null;
       setState(() {
         _report = report;
+        _chain = chain;
         _loading = false;
       });
       return report;
@@ -72,7 +80,7 @@ class _RuleSetInsightCardState extends ConsumerState<RuleSetInsightCard> {
     if (!mounted) return;
     final report = fresh ?? _report;
     if (report == null) return;
-    showRuleSetInsightSheet(context, report);
+    showRuleSetInsightSheet(context, report, _chain);
   }
 
   @override
@@ -179,9 +187,14 @@ class _Figure extends StatelessWidget {
 }
 
 class RuleSetInsightSheet extends StatelessWidget {
-  const RuleSetInsightSheet({super.key, required this.report});
+  const RuleSetInsightSheet({
+    super.key,
+    required this.report,
+    this.chain,
+  });
 
   final RuleSetReport report;
+  final ServerChain? chain;
 
   @override
   Widget build(BuildContext context) {
@@ -199,6 +212,20 @@ class RuleSetInsightSheet extends StatelessWidget {
               children: [
                 _SummaryRows(report: report),
                 const SizedBox(height: 12),
+                _SheetHeader(title: appLocalizations.ruleSetInsightServerChain),
+                if (chain != null)
+                  ServerChainDiagram(chain: chain!)
+                else
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      appLocalizations.ruleSetInsightServerChainMissing,
+                      style: AppTextStyle.caption1
+                          .of(context)
+                          .copyWith(color: context.colorScheme.onSurfaceVariant),
+                    ),
+                  ),
+                const SizedBox(height: 8),
                 _SheetHeader(title: appLocalizations.ruleSetInsightStructure),
                 RuleStructureDiagram(report: report),
                 const SizedBox(height: 8),

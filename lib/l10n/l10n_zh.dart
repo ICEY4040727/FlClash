@@ -3775,6 +3775,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ruleSetInsightProxyProviders => '代理提供者';
 
   @override
+  String get ruleSetInsightServerChain => '服务端链路';
+
+  @override
+  String get ruleSetInsightServerChainMissing =>
+      '运行 tool/fetch-server-chain.ps1 可补充服务端链路（只读摘要）';
+
+  @override
+  String get ruleSetInsightInternet => '互联网';
+
+  @override
+  String get ruleSetInsightRouteRules => '路由规则';
+
+  @override
   String get ruleSetInsightStructure => '结构';
 
   @override

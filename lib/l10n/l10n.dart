@@ -7032,6 +7032,30 @@ abstract class AppLocalizations {
   /// **'Proxy providers'**
   String get ruleSetInsightProxyProviders;
 
+  /// No description provided for @ruleSetInsightServerChain.
+  ///
+  /// In en, this message translates to:
+  /// **'Server chain'**
+  String get ruleSetInsightServerChain;
+
+  /// No description provided for @ruleSetInsightServerChainMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Run tool/fetch-server-chain.ps1 to add the server side.'**
+  String get ruleSetInsightServerChainMissing;
+
+  /// No description provided for @ruleSetInsightInternet.
+  ///
+  /// In en, this message translates to:
+  /// **'Internet'**
+  String get ruleSetInsightInternet;
+
+  /// No description provided for @ruleSetInsightRouteRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Route rules'**
+  String get ruleSetInsightRouteRules;
+
   /// No description provided for @ruleSetInsightStructure.
   ///
   /// In en, this message translates to:
